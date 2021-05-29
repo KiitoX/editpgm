@@ -5,7 +5,8 @@
 #include "lib/pgm.h"
 
 enum operation {
-    NO_OP
+    NO_OP,
+    MIRROR_VERTICALLY
 };
 
 void print_help() {
@@ -61,6 +62,9 @@ int main(int argc, char** argv) {
     switch (image_operation) {
         case NO_OP:
             break;
+	case MIRROR_VERTICALLY:
+	    mirror_vertically(image);
+	    break;
     }
 
     pgm_write(image, output_file);
