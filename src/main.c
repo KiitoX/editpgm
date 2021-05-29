@@ -3,15 +3,17 @@
 #include <string.h>
 
 #include "lib/pgm.h"
-#include "mirrHor.h"
 
 enum operation {
-    NO_OP,
+    MIRROR_HORIZONTAL,
     MIRROR_VERTICALLY,
-    MIRROR_HORIZONTAL
+    INVERT,
+    NO_OP,
 };
 
+extern void mirrorHorizontal(pgm_t *picture);
 extern void mirror_vertically(pgm_t *image);
+extern void pgm_invert(pgm_t *image);
 
 void print_help() {
     // Print a simple help
@@ -20,6 +22,7 @@ void print_help() {
            "The standard input/output is used if no file name is specified, respectively."
            "\n"
            "The following image operations are available:\n"
+           "  --invert\t\tinvert the image;\n"
            "  --no-op\t\tdoes nothing to the image;\n"
            "\n"
            "  --help\t\tdisplays this help and exits;\n");
@@ -35,12 +38,14 @@ void parse_args(int argc, char** argv, char **input_file, char **output_file, en
             if (0 == strcmp("-h", argv[1]) || 0 == strcmp(arg, "--help")) {
                 print_help();
                 exit(EXIT_SUCCESS);
-            } else if (0 == strcmp(arg, "--no-op")) {
-                *op = NO_OP;
-	    } else if (0 == strcmp(arg, "-mv")) {
-		*op = MIRROR_VERTICALLY;
             } else if (0 == strcmp(arg, "-mh")) {
                 *op = MIRROR_HORIZONTAL;
+            } else if (0 == strcmp(arg, "-mv")) {
+                *op = MIRROR_VERTICALLY;
+            } else if (0 == strcmp(arg, "--invert")) {
+                *op = INVERT;
+            } else if (0 == strcmp(arg, "--no-op")) {
+                *op = NO_OP;
             } else {
                 printf("Error, unknown optional argument '%s'.\n\n", arg);
                 print_help();
@@ -70,13 +75,17 @@ int main(int argc, char** argv) {
     pgm_t *image = pgm_read(input_file);
 
     switch (image_operation) {
-        case NO_OP:
+        case MIRROR_HORIZONTAL:
+            mirrorHorizontal(image);
             break;
 	    case MIRROR_VERTICALLY:
 	        mirror_vertically(image);
             break;
-        case MIRROR_HORIZONTAL:
-            mirrorHorizontal(image);
+        case INVERT:
+            pgm_invert(image);
+            break;
+        case NO_OP:
+        default:
             break;
     }
 
