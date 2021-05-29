@@ -3,7 +3,7 @@ project(editpgm C)
 
 set(CMAKE_C_STANDARD 99)
 
-add_executable(editpgm main.c lib/pgm.c lib/pgm.h)
+add_executable(editpgm src/main.c src/lib/pgm.c src/lib/pgm.h)
 
 find_package(OpenMP)
 if(OpenMP_C_FOUND)
