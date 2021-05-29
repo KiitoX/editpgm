@@ -7,8 +7,8 @@
 
 pgm_t *pgm_read(const char *file_name) {
     FILE *pgm_file;
-    if (0 == strcmp("-", file_name)) {
-        // A dash as filename denotes input from stdin
+    if (0 == strcmp("", file_name)) {
+        // An empty filename (default) denotes input from stdin
         pgm_file = stdin;
     } else {
         // Get a read-only file handle
@@ -68,8 +68,8 @@ pgm_t *pgm_read(const char *file_name) {
 
 void pgm_write(pgm_t *image, const char *file_name) {
     FILE *pgm_file;
-    if (0 == strcmp("-", file_name)) {
-        // A dash as filename denotes output to stdout
+    if (0 == strcmp("", file_name)) {
+        // An empty filename (default) denotes output to stdout
         pgm_file = stdout;
     } else {
         // Get a write-only file handle, truncate file if it exists, create a new file if it doesn't
