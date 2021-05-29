@@ -1,22 +1,10 @@
-//
-// Created by emma on 19/05/2021.
-//
-
-#ifndef EDITPGM_PGM_H
-#define EDITPGM_PGM_H
-
-#include <stddef.h>
-#include <stdint.h>
-#include <malloc.h>
-#include <assert.h>
+#pragma once
 
 typedef struct {
-    size_t width, height, maxval;
-    uint16_t *values;
+    int width, height, maxValue;
+    int *values;
 } pgm_t;
 
-pgm_t *pgm_load_file(const char *file_name);
-
-void pgm_write_file(pgm_t *image);
-
-#endif //EDITPGM_PGM_H
+pgm_t *pgm_read(const char *file_name);
+void pgm_write(pgm_t *image, const char *file_name);
+void pgm_free(pgm_t *image);
