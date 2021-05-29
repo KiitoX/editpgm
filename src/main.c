@@ -85,6 +85,7 @@ int main(int argc, char** argv) {
             break;
         case NO_OP:
         default:
+            printf("Warning: no operation has been specified!\n");
             break;
     }
 
