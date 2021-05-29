@@ -99,7 +99,7 @@ int main(int argc, char** argv) {
             break;
     }
     if (measure_time) {
-        end = omp_get_wtick();
+        end = omp_get_wtime();
         fprintf(stderr, "It took: %.2f Milliseconds\n", (double) (end - start) * 1000.0);
     }
 
