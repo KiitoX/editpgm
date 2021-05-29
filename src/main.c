@@ -27,10 +27,12 @@ void print_help() {
            " -mv --mirror-vertically    mirror the image vertically;\n"
            " -i  --invert               invert the image;\n"
            "\n"
+           " -t  --time                 time the operation execution;\n"
+           "\n"
            "     --help                 display this help and exit;\n");
 }
 
-void parse_args(int argc, char** argv, char **input_file, char **output_file, enum operation *op) {
+void parse_args(int argc, char** argv, char **input_file, char **output_file, enum operation *op, int *measure_time) {
     // Loop over all given command line arguments
     for (int i = 1; i < argc; ++i) {
         char *arg = argv[i];
@@ -46,6 +48,8 @@ void parse_args(int argc, char** argv, char **input_file, char **output_file, en
                 *op = MIRROR_VERTICALLY;
             } else if (0 == strcmp(arg, "-i") || 0 == strcmp(arg, "--invert")) {
                 *op = INVERT;
+            } else if (0 == strcmp(arg, "-t") || 0 == strcmp(arg, "--time")) {
+                *measure_time = 1;
             } else {
                 printf("Error, unknown optional argument '%s'.\n\n", arg);
                 print_help();
@@ -70,12 +74,15 @@ int main(int argc, char** argv) {
     clock_t start, end;
     char *input_file = "", *output_file = "";
     enum operation image_operation;
+    int measure_time = 0;
 
-    parse_args(argc, argv, &input_file, &output_file, &image_operation);
+    parse_args(argc, argv, &input_file, &output_file, &image_operation, &measure_time);
 
     pgm_t *image = pgm_read(input_file);
 
-    start = clock();
+    if (measure_time) {
+        start = clock();
+    }
     switch (image_operation) {
         case MIRROR_HORIZONTAL:
             mirrorHorizontal(image);
@@ -91,8 +98,11 @@ int main(int argc, char** argv) {
             printf("Warning: no operation has been specified!\n");
             break;
     }
-    end = clock();
-    printf("It took: %f Seconds", (double)(end - start) /CLOCKS_PER_SEC);
+    if (measure_time) {
+        end = clock();
+        printf("It took: %f Seconds", (double) (end - start) / CLOCKS_PER_SEC);
+    }
+
     pgm_write(image, output_file);
 
     pgm_free(image);
