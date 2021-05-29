@@ -20,10 +20,16 @@ typedef struct {
  * @author Benedikt
  */
 void mirror_vertically(pgm_t *image) {
-	for (int r = 0; r < image->width / 2; r++) {
-		for (int c = 0; c < image->height; c++) {
-			int* v1 = image->values + r * image->width + c;
-			int* v2 = image->values + r * image->width + image->height - c;
+	int *val = image->values;
+	int w = image->width;
+	int h = image->height;
+
+#pragma omp parallel for 
+	for (int r = 0; r < image->height / 2; r++) {
+#pragma omp parallel for
+		for (int c = 0; c < image->width; c++) {
+			int* v1 = val + r * w + c;
+			int* v2 = val + (h - r - 1) * w + c; 
 			int temp = *v1;
 			*v1 = *v2;
 			*v2 = temp;	

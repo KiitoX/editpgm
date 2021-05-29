@@ -37,6 +37,8 @@ void parse_args(int argc, char** argv, char **input_file, char **output_file, en
                 exit(EXIT_SUCCESS);
             } else if (0 == strcmp(arg, "--no-op")) {
                 *op = NO_OP;
+	    } else if (0 == strcmp(arg, "-mv")) {
+		*op = MIRROR_VERTICALLY;
             } else {
                 printf("Error, unknown optional argument '%s'.\n\n", arg);
                 print_help();
