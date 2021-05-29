@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <time.h>
 
 #include "lib/pgm.h"
 
@@ -67,6 +68,7 @@ void parse_args(int argc, char** argv, char **input_file, char **output_file, en
 }
 
 int main(int argc, char** argv) {
+    clock_t start, end;
     char *input_file = "", *output_file = "";
     enum operation image_operation;
 
@@ -74,6 +76,7 @@ int main(int argc, char** argv) {
 
     pgm_t *image = pgm_read(input_file);
 
+    start = clock();
     switch (image_operation) {
         case MIRROR_HORIZONTAL:
             mirrorHorizontal(image);
@@ -88,9 +91,12 @@ int main(int argc, char** argv) {
         default:
             break;
     }
-
+    end = clock();
+    printf("It took: %f Seconds", (double)(end - start) /CLOCKS_PER_SEC);
     pgm_write(image, output_file);
 
     pgm_free(image);
+
+
     return 0;
 }
