@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
-#include <time.h>
+#include <omp.h>
 
 #include "lib/pgm.h"
 
@@ -71,7 +71,7 @@ void parse_args(int argc, char** argv, char **input_file, char **output_file, en
 }
 
 int main(int argc, char** argv) {
-    clock_t start, end;
+    double start, end;
     char *input_file = "", *output_file = "";
     enum operation image_operation;
     int measure_time = 0;
@@ -81,7 +81,7 @@ int main(int argc, char** argv) {
     pgm_t *image = pgm_read(input_file);
 
     if (measure_time) {
-        start = clock();
+        start = omp_get_wtime();
     }
     switch (image_operation) {
         case MIRROR_HORIZONTAL:
@@ -99,8 +99,8 @@ int main(int argc, char** argv) {
             break;
     }
     if (measure_time) {
-        end = clock();
-        fprintf(stderr, "It took: %.2f Milliseconds\n", (double) (end - start) / CLOCKS_PER_SEC * 1000.0);
+        end = omp_get_wtick();
+        fprintf(stderr, "It took: %.2f Milliseconds\n", (double) (end - start) * 1000.0);
     }
 
     pgm_write(image, output_file);
