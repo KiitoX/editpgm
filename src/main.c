@@ -3,10 +3,12 @@
 #include <string.h>
 
 #include "lib/pgm.h"
+#include "mirrHor.h"
 
 enum operation {
     NO_OP,
-    MIRROR_VERTICALLY
+    MIRROR_VERTICALLY,
+    MIRROR_HORIZONTAL
 };
 
 extern void mirror_vertically(pgm_t *image);
@@ -66,9 +68,12 @@ int main(int argc, char** argv) {
     switch (image_operation) {
         case NO_OP:
             break;
-	case MIRROR_VERTICALLY:
-	    mirror_vertically(image);
-	    break;
+	    case MIRROR_VERTICALLY:
+	        mirror_vertically(image);
+            break;
+        case MIRROR_HORIZONTAL:
+            mirrorHorizontal(image);
+            break;
     }
 
     pgm_write(image, output_file);
