@@ -107,6 +107,5 @@ int main(int argc, char** argv) {
 
     pgm_free(image);
 
-
     return 0;
 }
