@@ -20,7 +20,7 @@ void print_help() {
     // Print a simple help
     fprintf(stderr, "Usage: editpgm [input.pgm [output.pgm]] [operation]\n"
            "\n"
-           "The standard input/output is used if no file name is specified, respectively."
+           "The standard input/output is used if no file name is specified, respectively.\n"
            "\n"
            "The following image operations are available:\n"
            " -mh --mirror-horizontally  mirror the image horizontally;\n"
@@ -100,7 +100,7 @@ int main(int argc, char** argv) {
     }
     if (measure_time) {
         end = clock();
-        fprintf(stderr, "It took: %f Seconds", (double) (end - start) / CLOCKS_PER_SEC);
+        fprintf(stderr, "It took: %f Milliseconds", (double) (end - start) / CLOCKS_PER_SEC * 1000.0);
     }
 
     pgm_write(image, output_file);
