@@ -23,10 +23,11 @@ void print_help() {
            "The standard input/output is used if no file name is specified, respectively."
            "\n"
            "The following image operations are available:\n"
-           "  --invert\t\tinvert the image;\n"
-           "  --no-op\t\tdoes nothing to the image;\n"
+           " -mh --mirror-horizontally  mirror the image horizontally;\n"
+           " -mv --mirror-vertically    mirror the image vertically;\n"
+           " -i  --invert               invert the image;\n"
            "\n"
-           "  --help\t\tdisplays this help and exits;\n");
+           "     --help                 display this help and exit;\n");
 }
 
 void parse_args(int argc, char** argv, char **input_file, char **output_file, enum operation *op) {
@@ -39,14 +40,12 @@ void parse_args(int argc, char** argv, char **input_file, char **output_file, en
             if (0 == strcmp("-h", argv[1]) || 0 == strcmp(arg, "--help")) {
                 print_help();
                 exit(EXIT_SUCCESS);
-            } else if (0 == strcmp(arg, "-mh")) {
+            } else if (0 == strcmp(arg, "-mh") || 0 == strcmp(arg, "--mirror-horizontally")) {
                 *op = MIRROR_HORIZONTAL;
-            } else if (0 == strcmp(arg, "-mv")) {
+            } else if (0 == strcmp(arg, "-mv") || 0 == strcmp(arg, "--mirror-vertically")) {
                 *op = MIRROR_VERTICALLY;
-            } else if (0 == strcmp(arg, "--invert")) {
+            } else if (0 == strcmp(arg, "-i") || 0 == strcmp(arg, "--invert")) {
                 *op = INVERT;
-            } else if (0 == strcmp(arg, "--no-op")) {
-                *op = NO_OP;
             } else {
                 printf("Error, unknown optional argument '%s'.\n\n", arg);
                 print_help();
@@ -89,6 +88,7 @@ int main(int argc, char** argv) {
             break;
         case NO_OP:
         default:
+            printf("Warning: no operation has been specified!\n");
             break;
     }
     end = clock();
