@@ -1,7 +1,7 @@
-#include <malloc.h>
 #include <assert.h>
-#include <string.h>
+#include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #include "pgm.h"
 
@@ -81,9 +81,9 @@ void pgm_write(pgm_t *image, const char *file_name) {
 
     for (int i = 0; i < image->width * image->height; ++i) {
         if (i % image->width == 0) {
-            printf("\n");
+            fprintf(pgm_file, "\n");
         }
-        printf("%d ", image->values[i]);
+        fprintf(pgm_file, "%d ", image->values[i]);
     }
 }
 
