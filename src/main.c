@@ -18,7 +18,7 @@ extern void pgm_invert(pgm_t *image);
 
 void print_help() {
     // Print a simple help
-    printf("Usage: editpgm [input.pgm [output.pgm]] [operation]\n"
+    fprintf(stderr, "Usage: editpgm [input.pgm [output.pgm]] [operation]\n"
            "\n"
            "The standard input/output is used if no file name is specified, respectively."
            "\n"
@@ -51,7 +51,7 @@ void parse_args(int argc, char** argv, char **input_file, char **output_file, en
             } else if (0 == strcmp(arg, "-t") || 0 == strcmp(arg, "--time")) {
                 *measure_time = 1;
             } else {
-                printf("Error, unknown optional argument '%s'.\n\n", arg);
+                fprintf(stderr,"Error, unknown optional argument '%s'.\n\n", arg);
                 print_help();
                 exit(EXIT_FAILURE);
             }
@@ -62,7 +62,7 @@ void parse_args(int argc, char** argv, char **input_file, char **output_file, en
             } else if (**output_file == '\0') {
                 *output_file = arg;
             } else {
-                printf("Error, could not associate positional argument '%s'.\n\n", arg);
+                fprintf(stderr, "Error, could not associate positional argument '%s'.\n\n", arg);
                 print_help();
                 exit(EXIT_FAILURE);
             }
@@ -95,12 +95,12 @@ int main(int argc, char** argv) {
             break;
         case NO_OP:
         default:
-            printf("Warning: no operation has been specified!\n");
+            fprintf(stderr, "Warning: no operation has been specified!\n");
             break;
     }
     if (measure_time) {
         end = clock();
-        printf("It took: %f Seconds", (double) (end - start) / CLOCKS_PER_SEC);
+        fprintf(stderr, "It took: %f Seconds", (double) (end - start) / CLOCKS_PER_SEC);
     }
 
     pgm_write(image, output_file);
