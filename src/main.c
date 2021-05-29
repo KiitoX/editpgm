@@ -100,7 +100,7 @@ int main(int argc, char** argv) {
     }
     if (measure_time) {
         end = clock();
-        fprintf(stderr, "It took: %.2f Milliseconds", (double) (end - start) / CLOCKS_PER_SEC * 1000.0);
+        fprintf(stderr, "It took: %.2f Milliseconds\n", (double) (end - start) / CLOCKS_PER_SEC * 1000.0);
     }
 
     pgm_write(image, output_file);
