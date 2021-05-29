@@ -4,28 +4,64 @@
 
 #include "lib/pgm.h"
 
-void parse_args(int argc, char** argv, char **input_file, char **output_file) {
-    if (argc < 2) return;
+enum operation {
+    NO_OP
+};
 
-    // Print a simple help
-    if (0 == strcmp("-h", argv[1]) || 0 == strcmp("--help", argv[1])) {
-        printf("Usage: editpgm [input.pgm [output.pgm]]");
-        exit(EXIT_SUCCESS);
+void print_help() {
+    printf("Usage: editpgm [input.pgm [output.pgm]] [operation]\n"
+           "\n"
+           "The following image operations are available:\n"
+           "  --no-op\t\tdoes nothing to the image;\n"
+           "\n"
+           "  --help\t\tdisplays this help and exits;\n");
+}
+
+void parse_args(int argc, char** argv, char **input_file, char **output_file, enum operation *op) {
+    // Loop over all given command line arguments
+    for (int i = 1; i < argc; ++i) {
+        char *arg = argv[i];
+
+        if (*arg == '-') {
+            // If an argument starts with a dash, treat it as an optional argument
+            if (0 == strcmp("-h", argv[1]) || 0 == strcmp(arg, "--help")) {
+                // Print a simple help
+                print_help();
+                exit(EXIT_SUCCESS);
+            } else if (0 == strcmp(arg, "--no-op")) {
+                *op = NO_OP;
+            } else {
+                printf("Error, unknown optional argument '%s'.\n\n", arg);
+                print_help();
+                exit(EXIT_FAILURE);
+            }
+        } else {
+            // Otherwise it is a positional argument
+            if (**input_file == '\0') {
+                *input_file = arg;
+            } else if (**output_file == '\0') {
+                *output_file = arg;
+            } else {
+                printf("Error, could not associate positional argument '%s'.\n\n", arg);
+                print_help();
+                exit(EXIT_FAILURE);
+            }
+        }
     }
-
-    *input_file = argv[1];
-
-    if (argc < 3) return;
-
-    *output_file = argv[2];
 }
 
 int main(int argc, char** argv) {
     char *input_file = "", *output_file = "";
+    enum operation image_operation;
 
-    parse_args(argc, argv, &input_file, &output_file);
+    parse_args(argc, argv, &input_file, &output_file, &image_operation);
 
     pgm_t *image = pgm_read(input_file);
+
+    switch (image_operation) {
+        case NO_OP:
+            break;
+    }
 
     pgm_write(image, output_file);
 
