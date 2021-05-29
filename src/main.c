@@ -10,7 +10,10 @@ enum operation {
 };
 
 void print_help() {
+    // Print a simple help
     printf("Usage: editpgm [input.pgm [output.pgm]] [operation]\n"
+           "\n"
+           "The standard input/output is used if no file name is specified, respectively."
            "\n"
            "The following image operations are available:\n"
            "  --no-op\t\tdoes nothing to the image;\n"
@@ -26,7 +29,6 @@ void parse_args(int argc, char** argv, char **input_file, char **output_file, en
         if (*arg == '-') {
             // If an argument starts with a dash, treat it as an optional argument
             if (0 == strcmp("-h", argv[1]) || 0 == strcmp(arg, "--help")) {
-                // Print a simple help
                 print_help();
                 exit(EXIT_SUCCESS);
             } else if (0 == strcmp(arg, "--no-op")) {
