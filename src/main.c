@@ -9,6 +9,8 @@ enum operation {
     MIRROR_VERTICALLY
 };
 
+extern void mirror_vertically(pgm_t *image);
+
 void print_help() {
     // Print a simple help
     printf("Usage: editpgm [input.pgm [output.pgm]] [operation]\n"
